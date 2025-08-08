@@ -30,9 +30,10 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
-                        .requestMatchers("/api/books/**").hasRole("USER") // 👈 Burası eklendi
+                        .requestMatchers("/api/books/**").hasAuthority("ROLE_USER") // 🔧 Bu satır düzeltildi
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }

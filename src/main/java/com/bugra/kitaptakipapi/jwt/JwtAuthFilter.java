@@ -30,7 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-
+        try{
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String username;
@@ -55,9 +55,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                System.out.println("Giriş yapan kullanıcı: " + SecurityContextHolder.getContext().getAuthentication());
             }
         }
 
-        filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
